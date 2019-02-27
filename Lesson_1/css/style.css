@@ -1,0 +1,71 @@
+body {
+  width: 1366px;
+  margin: 0 auto; }
+
+.header {
+  height: 70px;
+  background-color: #cccccc;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; }
+
+.btn-cart {
+  margin-right: 20px;
+  height: 50px;
+  width: 100px;
+  border: 1px solid #000000;
+  background-color: #cccccc;
+  font-size: 16px;
+  outline: none; }
+  .btn-cart:hover {
+    text-decoration: underline;
+    background-color: #dddddd; }
+  .btn-cart:active {
+    outline: none;
+    background-color: #ffffff; }
+
+.products {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px; }
+
+.product-item {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  background-color: #dddddd; }
+  .product-item img {
+    display: flex;
+    align-self: center;
+    height: 150px;
+    width: 90%;
+    border: 1px solid #cccccc;
+    margin-top: 10px; }
+  .product-item h3 {
+    text-transform: uppercase;
+    margin-left: 10px;
+    font-weight: 400; }
+  .product-item p {
+    font-weight: 900;
+    margin-left: 10px;
+    font-size: 14px; }
+  .product-item .buy-btn {
+    height: 30px;
+    width: 90%;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000000;
+    background-color: #cccccc;
+    outline: none;
+    margin-bottom: 10px; }
+    .product-item .buy-btn:hover {
+      text-decoration: underline;
+      background-color: #dddddd; }
+    .product-item .buy-btn:active {
+      outline: none;
+      background-color: #ffffff; }
+
+/*# sourceMappingURL=style.css.map */
