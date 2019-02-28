@@ -17,15 +17,7 @@ const renderProduct = (title, price) => {
 const renderPage = list => {
     const productsList = list.map(item => renderProduct(item.title, item.price));
 
-    //test
-
-    const test = productsList.join(' ');
-    console.log(test);
-    // document.querySelector('.products').innerHTML = productsList;
-    document.querySelector('.products').innerHTML = test;
+    document.querySelector('.products').innerHTML = productsList.join(' ');
 };
 
 renderPage(products);
-
-
-// apply(). bind (), стрелочные, this
