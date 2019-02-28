@@ -67,5 +67,8 @@ body {
     .product-item .buy-btn:active {
       outline: none;
       background-color: #ffffff; }
+    .product-item .buy-btn:disabled {
+      text-decoration: none;
+      background-color: #ffffff; }
 
 /*# sourceMappingURL=style.css.map */

@@ -25,6 +25,7 @@ const renderProduct = (title = "Не доступно", price = "Не досту
     catalogItemButton.innerText = "Купить";
     if (price === "Не доступно"){
         catalogItemButton.setAttribute("disabled", "disabled");
+        catalogItemButton.innerText = "Не доступно";
     }
     
     blockOfCatalogItem.appendChild(catalogItemImg);
