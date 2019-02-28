@@ -3,24 +3,23 @@ const products = [
     {id: 2, title: 'Mouse', price: 20},
     {id: 3, title: 'Keyboard', price: 200},
     {id: 4, title: 'Gamepad', price: 50},
-
 ];
 
 const renderProduct = (title = "Не доступно", price = "Не доступно") => {
-    let blockOfCatalogItem = document.createElement("div");
+    const blockOfCatalogItem = document.createElement("div");
     blockOfCatalogItem.classList.add("product-item");
 
-    let catalogItemImg = document.createElement("img");
+    const catalogItemImg = document.createElement("img");
     catalogItemImg.setAttribute("src", "#");
     catalogItemImg.setAttribute("alt", "Item");
     
-    let catalogItemH3 = document.createElement("h3");
+    const catalogItemH3 = document.createElement("h3");
     catalogItemH3.innerText = title;
     
-    let catalogItemP = document.createElement("p");
+    const catalogItemP = document.createElement("p");
     catalogItemP.innerText = price;
     
-    let catalogItemButton = document.createElement("button");
+    const catalogItemButton = document.createElement("button");
     catalogItemButton.classList.add("buy-btn");
     catalogItemButton.innerText = "Купить";
     if (price === "Не доступно"){
@@ -37,7 +36,7 @@ const renderProduct = (title = "Не доступно", price = "Не досту
 };
 
 const renderPage = list => {
-    let productsList = document.querySelector(".products");
+    const productsList = document.querySelector(".products");
     if (list === undefined || list.length === 0){
         productsList.appendChild(renderProduct());
     }
