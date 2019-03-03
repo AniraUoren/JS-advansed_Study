@@ -28,9 +28,6 @@ class createHamburger {
             if(element.description === this.size || element.description === this.filling || element.description === this.topping){
                 totalPrice += element.price;
                 totalCalorie += element.calorie;
-
-                console.log(totalPrice);
-                console.log(totalCalorie);
             }
         }
 
