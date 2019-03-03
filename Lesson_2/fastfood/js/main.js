@@ -1,34 +1,49 @@
 class createHamburger {
-    constructor (checkedComponents){
+    constructor(checkedComponents) {
         this.size = checkedComponents.size;
         this.filling = checkedComponents.filling;
-        this.extra = checkedComponents.extra;
-        this._createHamburgerMenu();
+        this.topping = checkedComponents.topping;
+        this.humburgerMenu = [];
+        this.createHamburgerMenu();
     }
 
-    _createHamburgerMenu(){
-        const humburgerMenu = {
-            size: [
-                ["big", 100, 40],
-                ["small", 50, 20]
-            ],
-            filling:[
-                ["cheese", 10, 20],
-                ["salad", 20, 5],
-                ["potato", 15, 10]
-            ],
-            extra:[
-                ["flavoring", 15, 0],
-                ["mayo", 20, 5]
-            ]
+    createHamburgerMenu() {
+        this.humburgerMenu = [
+            {description: "big", price: 100, calorie: 40},
+            {description: "small", price: 50, calorie: 20},
+            {description: "cheese", price: 10, calorie: 20},
+            {description: "salad", price: 20, calorie: 5},
+            {description: "potato", price: 15, calorie: 10},
+            {description: "flavoring", price: 15, calorie: 0},
+            {description: "mayo", price: 20, calorie: 5},
+            {description: "none", price: 0, calorie: 0}
+        ];
+    }
+
+    checkPrice(){
+        let totalPrice = 0;
+        let totalCalorie = 0;
+
+        for (let element of this.humburgerMenu){
+            if(element.description === this.size || element.description === this.filling || element.description === this.topping){
+                totalPrice += element.price;
+                totalCalorie += element.calorie;
+
+                console.log(totalPrice);
+                console.log(totalCalorie);
+            }
         }
-    }
 
-    createMenuElement(){
-        let size = document.querySelector("#size");
-        let filling = document.querySelector("#filling");
-        let extra = document.querySelector("#extra");
-        
-        // for (let i = 0; i <  ) {}
+        return [totalPrice, totalCalorie];
     }
 }
+
+let checkedComponents = {
+    size: "small",
+    filling: "potato",
+    topping: "none"
+};
+
+let test = new createHamburger(checkedComponents);
+console.log(test);
+console.log(test.checkPrice());
