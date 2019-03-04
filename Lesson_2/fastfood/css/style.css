@@ -20,4 +20,7 @@ header {
   margin-top: 20px;
   border: 1px dashed #cccccc; }
 
+.no-display {
+  display: none; }
+
 /*# sourceMappingURL=style.css.map */
