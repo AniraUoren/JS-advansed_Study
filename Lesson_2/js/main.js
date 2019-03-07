@@ -1,9 +1,11 @@
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+
 //создание элемента каталога
 class ProductItem {
     constructor(product){
-        this.title = product.title;
-        this.price = product.price;
-        this.id = product.id;
+        this.title = product.product_name;
+        this.price = +product.price;
+        this.id = product.id_product;
         this.img = product.img;
         this.render();
     }
@@ -23,37 +25,69 @@ class ProductItem {
 class productList {
     constructor(container = ".products"){
         this.container = container;
-        this.productsList = []; //то, что получено с сервера
+        this.goods = []; //то, что получено с сервера
         this.allproducts = []; //массив элементов типа ProductItem
-        this._fetchProducts();
+        this.addedToCart = [];
+        this._getProducts()
+            .then(data => {
+                this.goods = [...data];
+                this._render();
+            });
     }
 
-    _fetchProducts(){
-        this.productsList = [
-            {id: 1, title: 'Notebook', price: 2000},
-            {id: 2, title: 'Mouse', price: 20},
-            {id: 3, title: 'Keyboard', price: 200},
-            {id: 4, title: 'Gamepad', price: 50},
-            {id: 5, title: 'Chair', price: 150},
-        ];
+    _getProducts(){
+        return fetch(`${API}/catalogData.json`)
+            .then(result => result.json())
+            .catch(error => {
+                console.log(error);
+            })
     }
 
-    render(){
-        for(let product of this.productsList){
+    _render(){
+        for(let product of this.goods){
             const productObj = new ProductItem(product);
             this.allproducts.push(productObj);
             document.querySelector(this.container).insertAdjacentHTML("beforeend", productObj.render());
         }
     }
 
-    summaryPrice(){
-        let summary = 0;
+    //почему-то не считается теперь
+    // summaryPrice(){
+    //     // console.log(this.allproducts);
+    //     //
+    //     // for (let elem of this.allproducts){
+    //     //     console.log(elem);
+    //     // }
+    //
+    //     // return this.allproducts.reduce((accum, item) => accum += item.price, 0);
+    //
+    //     // console.log(summary);
+    //
+    //     return this.allproducts;
+    // }
 
-        for (let product of this.productsList){
-            summary += product.price;
-        }
+    pushButtonBuy(){
+        const catalogBlock = document.querySelector(".products");
 
-        console.log(summary);
+        catalogBlock.addEventListener("click", (event) => {
+            let button = event.target;
+            let elementBlockID = +button.parentNode.getAttribute("id");
+            let elementsOnPage = this.allproducts;
+
+
+            for (let elem of elementsOnPage){
+                if (elem.id === elementBlockID){
+                    if(this.addedToCart.indexOf(elem) === -1){
+                        this.addedToCart.push(this.allproducts[elementsOnPage.indexOf(elem)]);
+                    } else{
+                        
+                    }
+                }
+            }
+
+
+        })
+        console.log(this.addedToCart);
     }
 
 }
@@ -64,7 +98,7 @@ class cartItem{
     constructor(product){
         this.img = product.img;
         this.title = product.title;
-        this.id = products.id;
+        this.id = product.id;
         this.quantity = product.quantity;
         this.price = product.price;
     }
@@ -89,8 +123,9 @@ class cart{
     }
 
     //добавление объекта в addedToCart[] по кнопке Купить
+
     //нужно поле типа number для указания количества при добавлении товара (quantity)
-    add(product, quantity){
+    add(product, quantity = 1){
         product.quantity = quantity;
         this.addedToCart.push(cartItem(product));
     }
@@ -120,26 +155,17 @@ class cart{
 }
 
 let list = new productList();
-list.render();
+list._render();
 
-list.summaryPrice();
+// console.log(list.summaryPrice());
 
-// //tests
-//
-// const products = [
-//     {id: 1, title: 'Notebook', price: 2000},
-//     {id: 2, title: 'Mouse', price: 20},
-//     {id: 3, title: 'Keyboard', price: 200},
-//     {id: 4, title: 'Gamepad', price: 50},
-//
-// ];
-//
-// let cartElements = [];
-// for(let prod of products){
-//     let cartObj = new cartItem(prod);
-//     cartObj.render();
-//     cartElements.push(cartObj);
-// }
-//
-// console.log(cartElements);
-// //tests-end
+// let obj = list.summaryPrice();
+
+let cartButton = document.getElementById("btn-cart");
+let cartDiv = document.getElementById("cart");
+
+cartButton.addEventListener("click", () => {
+    cartDiv.classList.toggle("no-display");
+});
+list.pushButtonBuy();
+
