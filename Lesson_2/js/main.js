@@ -1,171 +1,219 @@
+//константы
 const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
-//создание элемента каталога
-class ProductItem {
-    constructor(product){
-        this.title = product.product_name;
-        this.price = +product.price;
-        this.id = product.id_product;
-        this.img = product.img;
-        this.render();
-    }
-
-    render(){
-        return `<div class="product-item" id="${this.id}">
-                <img src="${this.img}" alt="${this.title}">
-                <h3>${this.title}</h3>
-                <p>${this.price}</p>
-                <button class="buy-btn">Купить</button>
-                </div>`
-    }
-}
-
-//создание списка в каталоге
-
-class productList {
-    constructor(container = ".products"){
+//общий класс List
+class List{
+    constructor(container, url, switcher = switchObject){
         this.container = container;
-        this.goods = []; //то, что получено с сервера
-        this.allproducts = []; //массив элементов типа ProductItem
-        this.addedToCart = [];
-        this._getProducts()
-            .then(data => {
-                this.goods = [...data];
-                this._render();
-            });
+        this.url = url;
+        this.switcher = switcher;
+        this.receivedElements = []; //то, что получили с сервера
+        this.allProducts = []; // конечные имеющиеся элементы
+        this.filteredProducts = []; // отфильтрованные элементы
+        this._init();
     }
 
-    _getProducts(){
-        return fetch(`${API}/catalogData.json`)
+    getJSON(url){
+        return fetch(url ? url : `${API + this.url}`)
             .then(result => result.json())
             .catch(error => {
                 console.log(error);
             })
     }
 
-    _render(){
-        for(let product of this.goods){
-            const productObj = new ProductItem(product);
-            this.allproducts.push(productObj);
+    handleData(data){
+        this.receivedElements = [...data];
+        this.render();
+    }
+
+    calcSum(){
+        return this.allProducts.reduce((accum, item) => accum += item.price, 0);
+    }
+
+    render(){
+        for(let product of this.receivedElements){
+            const productObj = new this.switcher[this.constructor.name](product);
+            this.allProducts.push(productObj);
             document.querySelector(this.container).insertAdjacentHTML("beforeend", productObj.render());
         }
     }
 
-    //почему-то не считается теперь
-    // summaryPrice(){
-    //     // console.log(this.allproducts);
-    //     //
-    //     // for (let elem of this.allproducts){
-    //     //     console.log(elem);
-    //     // }
-    //
-    //     // return this.allproducts.reduce((accum, item) => accum += item.price, 0);
-    //
-    //     // console.log(summary);
-    //
-    //     return this.allproducts;
-    // }
+    //где поиск? туть^^
+    filter(value){
+        const regexp = new RegExp(value, "i");
+        this.filteredProducts = this.allProducts.filter(product => regexp.test(product.product_name));
 
-    pushButtonBuy(){
-        const catalogBlock = document.querySelector(".products");
+        this.allProducts.forEach(element =>{
+            const block = document.querySelector(`.product-item[id="${element.id_product}"]`);
 
-        catalogBlock.addEventListener("click", (event) => {
-            let button = event.target;
-            let elementBlockID = +button.parentNode.getAttribute("id");
-            let elementsOnPage = this.allproducts;
-
-
-            for (let elem of elementsOnPage){
-                if (elem.id === elementBlockID){
-                    if(this.addedToCart.indexOf(elem) === -1){
-                        this.addedToCart.push(this.allproducts[elementsOnPage.indexOf(elem)]);
-                    } else{
-                        
-                    }
-                }
+            if (!this.filteredProducts.includes(element)){
+                block.classList.add("no-display");
+            }else {
+                block.classList.remove("no-display");
             }
-
-
         })
-        console.log(this.addedToCart);
     }
 
+    _init(){
+        return false
+    }
 }
 
-//создание элемента корзины
-
-class cartItem{
+//общий класс Item
+class Item {
     constructor(product){
-        this.img = product.img;
-        this.title = product.title;
-        this.id = product.id;
-        this.quantity = product.quantity;
-        this.price = product.price;
+        this.product_name = product.product_name;
+        this.price = +product.price;
+        this.id_product = product.id_product;
+        this.img = "#";
+        this.render();
     }
 
     render(){
-        return `<div id="${this.id}">
-                    <img src="${this.img}" alt="${this.title}" class="cart_img">
-                    <p class="cart_p">${this.title}</p>
-                    <p class="cart_p">${this.quantity}</p>
-                    <p class="cart_p">${this.price*this.quantity}</p>
-                    <button type="button" class="cart_button" id="cart_button_delete"><i class="fa fa-plus cart_button_image" aria-hidden="true"></i></button>
+        return `<div class="product-item" id="${this.id_product}">
+                <img src="${this.img}" alt="${this.product_name}">
+                <h3>${this.product_name}</h3>
+                <p>${this.price}</p>
+                <button class="buy-btn"
+                data-id = "${this.id_product}"
+                data-name = "${this.product_name}"
+                data-price = "${this.price}">Купить</button>
                 </div>`
     }
 }
 
-//создание списка элементов в корзине и работа с ней
+//класс элемента Product, наследуемый от Item
+class ProductItem extends Item{}
 
-class cart{
-    constructor(container = ".cart"){
-        this.container = container;
-        this.addedToCart = [];
+//класс каталога, наследуемый от List
+class ProductList extends List{
+    constructor(cart, container = ".products", url = "/catalogData.json"){
+        super(container, url);
+        this.cart = cart;
+        this.getJSON()
+            .then(data => {
+                this.handleData(data);
+            });
     }
 
-    //добавление объекта в addedToCart[] по кнопке Купить
-
-    //нужно поле типа number для указания количества при добавлении товара (quantity)
-    add(product, quantity = 1){
-        product.quantity = quantity;
-        this.addedToCart.push(cartItem(product));
-    }
-
-    //редактирование количества
-    /*пока что-то точное написать не могу т.к. не в курсе как будет выглядеть корзина и какие элементы управления будут
-    * можно добавить реакцию на кнопки + или - рядом с полем количества или добавить поле для ручного ввода кол-ва*/
-
-    //удаление элемента из корзины
-    /*получить с помощью всплытия, индекс элемента в массиве я умею получить только через перебор*/
-    delete(productInCart){
-        for (let i =0; i <this.addedToCart.length; i++){
-            if (productInCart.id === addedToCart[i].id){
-                addedToCart.splice(i, 1);
+    _init(){
+        document.querySelector(this.container).addEventListener("click", evt => {
+            if(evt.target.classList.contains("buy-btn")){
+                this.cart.addProduct(evt.target);
             }
-        }
+        });
+
+        document.getElementById("filter_form").addEventListener("submit", evt => {
+            evt.preventDefault();
+            this.filter(document.getElementById("filter_field").value)
+        })
     }
 
-    //создание списка элементов в корзине
-    render(){
-        for(let product of this.addedToCart){
-            const productObj = new cartItem(product);
-            document.querySelector(this.container).insertAdjacentHTML("beforeend", productObj.render());
-        }
-    }
 
 }
 
-let list = new productList();
-list._render();
+//класс элемента Cart, наследуемый от Item
+class CartItem extends Item{
+    constructor(element){
+        super (element);
+        this.quantity = element.quantity;
+    }
 
-// console.log(list.summaryPrice());
+    render(){
+        return `<div class="cart_element" data-id="${this.id_product}">
+                <img src="${this.img}" alt="${this.product_name}">
+                <h3>${this.product_name}</h3>
+                <p class="cart_element_price">${this.price}</p>
+                <div class="cart_element_quantity-block">
+                    <button class="btn-minus">-</button>
+                    <p class="cart_element_quantity">1</p>
+                    <button class="btn-plus">+</button>
+                </div>
+                <button class="del-btn">X</button>
+            </div>`
+    }
+}
 
-// let obj = list.summaryPrice();
+//класс корзины, наследуемый от List
+class Cart extends List{
+    constructor(container = ".cart", url = "/getBasket.json"){
+        super(container, url);
+        this.getJSON()
+            .then(data => {
+                this.handleData(data.contents);
+            })
+    }
 
-let cartButton = document.getElementById("btn-cart");
-let cartDiv = document.getElementById("cart");
+    addProduct(element){
+        this.getJSON(`${API}/addToBasket.json`)
+            .then(data => {
+                if (data.result === 1){
+                    let productID = +element.dataset["id"];
+                    let find = this.allProducts.find(product => productID === product.id_product);
 
-cartButton.addEventListener("click", () => {
-    cartDiv.classList.toggle("no-display");
-});
-list.pushButtonBuy();
+                    if (find){
+                        find.quantity++;
+                        this._updateCart(find);
+                    } else{
+                        let product = {
+                            id_product: productID,
+                            price: +element.dataset["price"],
+                            product_name: element.dataset["name"],
+                            quantity: 1
+                        };
+
+                        this.receivedElements = [product];
+                        this.render();
+                    }
+                } else {
+                    alert("Error. Try later.")
+                }
+            })
+    }
+
+    removeProduct(element){
+        this.getJSON(`${API}/deleteFromBasket.json`)
+            .then(data => {
+                if(data.result === 1){
+                    let productId = + element.parentNode.dataset['id'];
+                    let find = this.allProducts.find(product => product.id_product === productId);
+
+                    if(find.quantity > 1){
+                        find.quantity--;
+                        this._updateCart(find);
+                    } else {
+                        this.allProducts.splice(this.allProducts.indexOf(find), 1);
+                        document.querySelector(`.cart_element[data-id="${productId}"]`).remove();
+                    }
+                } else {
+                    alert('Error');
+                }
+            })
+    }
+
+    _updateCart(product){
+        let block = document.querySelector(`.cart_element[data-id="${product.id_product}"]`);
+        block.querySelector('.cart_element_quantity').textContent = `${product.quantity}`;
+        block.querySelector('.cart_element_price').textContent = `${product.quantity*product.price}`;
+    }
+
+    _init(){
+        document.querySelector('.btn-cart').addEventListener('click', () => {
+            document.querySelector(this.container).classList.toggle('no-display');
+        });
+        document.querySelector(this.container).addEventListener('click', e => {
+            if(e.target.classList.contains('del-btn')){
+                this.removeProduct(e.target);
+            }
+        })
+    }
+}
+
+const switchObject = {
+    ProductList: ProductItem,
+    Cart: CartItem
+};
+
+let cart = new Cart();
+let products = new ProductList(cart);
 
