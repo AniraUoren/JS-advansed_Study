@@ -42,9 +42,16 @@ class List{
     filter(value){
         const regexp = new RegExp(value, "i");
         this.filteredProducts = this.allProducts.filter(product => regexp.test(product.product_name));
+        //debug start
+        console.log(value, regexp);
+        console.log(this.filteredProducts);
+        //debug end
 
         this.allProducts.forEach(element =>{
             const block = document.querySelector(`.product-item[id="${element.id_product}"]`);
+
+            console.log(element);
+            console.log(block);
 
             if (!this.filteredProducts.includes(element)){
                 block.classList.add("no-display");

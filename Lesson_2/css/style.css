@@ -1,6 +1,3 @@
-.no-display {
-  display: none; }
-
 body {
   width: 1366px;
   margin: 0 auto; }
@@ -13,7 +10,7 @@ body {
   justify-content: flex-end;
   position: relative; }
 
-.btn-cart {
+.btn-cart, .btn-login {
   box-sizing: border-box;
   margin-right: 20px;
   height: 50px;
@@ -22,10 +19,10 @@ body {
   background-color: #cccccc;
   font-size: 16px;
   outline: none; }
-  .btn-cart:hover {
+  .btn-cart:hover, .btn-login:hover {
     text-decoration: underline;
     background-color: #dddddd; }
-  .btn-cart:active {
+  .btn-cart:active, .btn-login:active {
     outline: none;
     background-color: #ffffff; }
 
@@ -157,5 +154,11 @@ body {
       background-color: #eeeeee; }
     .filter_form button[type="submit"]:active {
       background-color: #ffffff; }
+
+.btn-login {
+  margin-right: 10px; }
+
+.no-display {
+  display: none; }
 
 /*# sourceMappingURL=style.css.map */
