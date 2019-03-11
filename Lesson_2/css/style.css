@@ -2,6 +2,12 @@ body {
   width: 1366px;
   margin: 0 auto; }
 
+.green_border {
+  border-color: #00ff00 !important; }
+
+.red_border {
+  border-color: #ff0000 !important; }
+
 .header {
   height: 70px;
   background-color: #cccccc;
@@ -10,7 +16,7 @@ body {
   justify-content: flex-end;
   position: relative; }
 
-.btn-cart, .btn-login {
+.btn-cart, .btn-login, #modal_auto_form button {
   box-sizing: border-box;
   margin-right: 20px;
   height: 50px;
@@ -19,10 +25,10 @@ body {
   background-color: #cccccc;
   font-size: 16px;
   outline: none; }
-  .btn-cart:hover, .btn-login:hover {
+  .btn-cart:hover, .btn-login:hover, #modal_auto_form button:hover {
     text-decoration: underline;
     background-color: #dddddd; }
-  .btn-cart:active, .btn-login:active {
+  .btn-cart:active, .btn-login:active, #modal_auto_form button:active {
     outline: none;
     background-color: #ffffff; }
 
@@ -157,6 +163,79 @@ body {
 
 .btn-login {
   margin-right: 10px; }
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-color: #000000; }
+
+.modal_auto {
+  position: absolute;
+  top: 30%;
+  left: 37.9238%;
+  width: 600px;
+  background-color: #cccccc; }
+  .modal_auto h3 {
+    margin-left: 100px; }
+
+.close_modal {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  text-transform: uppercase;
+  background-color: transparent;
+  border: none;
+  outline: none; }
+  .close_modal:hover {
+    text-decoration: underline; }
+  .close_modal:active {
+    color: #ffffff; }
+
+#modal_auto_form {
+  margin: 30px auto;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
+  #modal_auto_form input[type="text"],
+  #modal_auto_form input[type="tel"],
+  #modal_auto_form input[type="email"] {
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    height: 50px;
+    border: 1px solid #000000;
+    background-color: #cccccc;
+    padding: 10px;
+    outline: none;
+    text-transform: uppercase; }
+    #modal_auto_form input[type="text"]:hover,
+    #modal_auto_form input[type="tel"]:hover,
+    #modal_auto_form input[type="email"]:hover {
+      background-color: #eeeeee; }
+    #modal_auto_form input[type="text"]:focus,
+    #modal_auto_form input[type="tel"]:focus,
+    #modal_auto_form input[type="email"]:focus {
+      background-color: #ffffff; }
+  #modal_auto_form textarea {
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+    background-color: #cccccc;
+    padding: 10px;
+    outline: none; }
+    #modal_auto_form textarea:hover {
+      background-color: #eeeeee; }
+    #modal_auto_form textarea:focus {
+      background-color: #ffffff; }
+
+.modal_auto_flex {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
 
 .no-display {
   display: none; }

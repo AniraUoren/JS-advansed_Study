@@ -12,7 +12,7 @@
             <button type="submit">Фильтр</button>
         </form>
 
-        <button class="btn-login" type="button" id="btn-login">Войти</button>
+        <button class="btn-login" type="button" id="btn-feedback">Обратиться</button>
 
         <button class="btn-cart" type="button" id="btn-cart">Корзина</button>
 <!--modal-->
@@ -23,7 +23,24 @@
         <div class="products"></div>
     </main>
 
+    <!--modal-start-->
+    <div class="shadow no-display"></div>
 
+        <div id="modal_auto" class="modal_auto no-display">
+            <h3>Обратная связь</h3>
+            <button type="button" class="close_modal">Закрыть</button>
+            <form action="#" id="modal_auto_form">
+                <input type="text" placeholder="Введите ФИО" id="modal_auto_form_name">
+                <input type="tel" placeholder="Введите номер телефона">
+                <input type="email" name="modal_auto_form" placeholder="Введите EMAIL">
+                <textarea name="modal_auto_form" cols="30" rows="10" placeholder="Введите комментарий (не обязательно)"></textarea>
+                <div class="modal_auto_flex">
+                    <button type="reset">Очистить</button>
+                    <button type="submit">Готово</button>
+                </div>
+            </form>
+        </div>
+    <!--modal-end-->
 
     <script src="js/main.js"></script>
 </body>

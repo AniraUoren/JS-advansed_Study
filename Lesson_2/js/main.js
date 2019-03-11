@@ -216,6 +216,96 @@ class Cart extends List{
     }
 }
 
+//класс для формы обратной связи
+class Feedback{
+    constructor(container = ".modal_auto"){
+        this.container = container;
+        this._closeFeedback();
+        this._openFeedback();
+        this._formValidation();
+    }
+
+    _openFeedback(){
+        let buttonToOpenFeedback = document.getElementById("btn-feedback");
+        let shadowBlock = document.querySelector(".shadow");
+
+        buttonToOpenFeedback.addEventListener("click", event => {
+            shadowBlock.classList.remove("no-display");
+            document.querySelector(this.container).classList.remove("no-display");
+        })
+    }
+
+    _closeFeedback(){
+        let closeButton = document.querySelector(this.container).querySelector(".close_modal");
+        let shadowBlock = document.querySelector(".shadow");
+
+        document.querySelector(this.container).addEventListener("click", event => {
+            if (event.target === closeButton){
+                document.querySelector(this.container).classList.add("no-display");
+                shadowBlock.classList.add("no-display");
+            }
+        })
+    }
+
+    _validationName(string){
+        let regexpName = /(^[a-z'-]+ [a-z'-]+$)|(^[а-яё'-]+ [а-яё'-]+$)/ig;
+
+        return regexpName.test(string);
+    }
+
+    _validationTelephone(string){
+        let regexpTel = /^[0-9-+\(\)]+$/g;
+
+        return regexpTel.test(string);
+    }
+
+    _validationEmail(string){
+        let regexpEmail = /^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$/;
+
+        return regexpEmail.test(string);
+    }
+
+    _formValidation(container = "modal_auto_form"){
+        let formBlock = document.getElementById(container);
+
+        formBlock.addEventListener("submit", evt => {
+            evt.preventDefault();
+
+            if (this._validationName(formBlock.querySelector("input[type='text']").value)){
+                formBlock.querySelector("input[type='text']").classList.remove("red_border");
+                formBlock.querySelector("input[type='text']").classList.add("green_border");
+            } else {
+                formBlock.querySelector("input[type='text']").classList.add("red_border");
+            }
+            if (this._validationTelephone(formBlock.querySelector("input[type='tel']").value)){
+                formBlock.querySelector("input[type='tel']").classList.remove("red_border");
+                formBlock.querySelector("input[type='tel']").classList.add("green_border");
+            } else {
+                formBlock.querySelector("input[type='tel']").classList.add("red_border");
+            }
+            if (this._validationEmail(formBlock.querySelector("input[type='email']").value)){
+                formBlock.querySelector("input[type='email']").classList.remove("red_border");
+                formBlock.querySelector("input[type='email']").classList.add("green_border");
+            } else {
+                formBlock.querySelector("input[type='email']").classList.add("red_border");
+            }
+
+        })
+
+        formBlock.addEventListener("click", evt => {
+            let canselButton = formBlock.querySelector('button [type="reset"]');
+
+            if (evt.target === canselButton)
+                formBlock.querySelector("input[type='text']").classList.remove("red_border");
+                formBlock.querySelector("input[type='text']").classList.remove("green_border");
+                formBlock.querySelector("input[type='tel']").classList.remove("red_border");
+                formBlock.querySelector("input[type='tel']").classList.remove("green_border");
+                formBlock.querySelector("input[type='email']").classList.remove("red_border");
+                formBlock.querySelector("input[type='email']").classList.remove("green_border");
+        })
+    }
+}
+
 const switchObject = {
     ProductList: ProductItem,
     Cart: CartItem
@@ -223,4 +313,4 @@ const switchObject = {
 
 let cart = new Cart();
 let products = new ProductList(cart);
-
+let modal = new Feedback();

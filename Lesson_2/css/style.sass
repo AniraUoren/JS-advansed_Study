@@ -2,6 +2,12 @@ body
   width: 1366px
   margin: 0 auto
 
+.green_border
+  border-color: #00ff00 !important
+
+.red_border
+  border-color: #ff0000 !important
+
 .header
   height: 70px
   background-color: #cccccc
@@ -159,6 +165,76 @@ body
   @extend .btn-cart
   margin-right: 10px
 
+.shadow
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  opacity: 0.5
+  background-color: #000000
+
+.modal_auto
+  position: absolute
+  top: 30%
+  left: 37.9238%
+  width: 600px
+  background-color: #cccccc
+  h3
+    margin-left: 100px
+
+.close_modal
+  position: absolute
+  top: 5px
+  right: 5px
+  text-transform: uppercase
+  background-color: transparent
+  border: none
+  outline: none
+  &:hover
+    text-decoration: underline
+  &:active
+    color: #ffffff
+
+#modal_auto_form
+  margin: 30px auto
+  width: 400px
+  display: flex
+  flex-direction: column
+  justify-content: center
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"]
+    margin-bottom: 5px
+    box-sizing: border-box
+    height: 50px
+    border: 1px solid #000000
+    background-color: #cccccc
+    padding: 10px
+    outline: none
+    text-transform: uppercase
+    &:hover
+      background-color: #eeeeee
+    &:focus
+      background-color: #ffffff
+  textarea
+    margin-bottom: 5px
+    box-sizing: border-box
+    border: 1px solid #000000
+    background-color: #cccccc
+    padding: 10px
+    outline: none
+    &:hover
+      background-color: #eeeeee
+    &:focus
+      background-color: #ffffff
+  button
+    @extend .btn-cart
+.modal_auto_flex
+  display: flex
+  justify-content: center
+  align-items: center
 
 .no-display
   display: none
+
