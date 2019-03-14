@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Интернет-магазин</title>
+</head>
+<body>
+    <div id="app">
+
+        <header class="header">
+            <form action="#" id="filter_form" class="filter_form" @submit="filterCatalog">
+                <input type="text" id="filter_field" v-model="searchLine" placeholder="Search">
+                <button type="submit">Фильтр</button>
+            </form>
+
+            <button class="btn-login" type="button" id="btn-feedback" @click="isShowFB = !isShowFB">Обратиться</button>
+
+            <button class="btn-cart" type="button" id="btn-cart" @click="isShowCart = !isShowCart">Корзина</button>
+            <!--modal-->
+            <div id="cart" class="cart" v-if="isCartEmpty" v-show="isShowCart" v-for="element of cart" :key="element.id_product">
+                <div class="cart_element">
+                    <img :src="imgCatalog" :alt="element.product_name">
+                    <h3>{{ element.product_name }}</h3>
+                    <p class="cart_element_price">{{ element.price }}</p>
+                    <div class="cart_element_quantity-block">
+                        <button class="btn-minus" @click="element.quantity--">-</button>
+                        <p class="cart_element_quantity">{{ element.quantity }}</p>
+                        <button class="btn-plus" @click="element.quantity++">+</button>
+                    </div>
+                    <button class="del-btn">X</button>
+                </div>
+            </div>
+            <div id="cart_empty" class="cart" v-else><p>Корзина пуста!</p></div>
+            <!--modal-->
+        </header>
+        <main>
+            <div class="products">
+                <div class="product-item" v-for="product of products" :key="product.id_product">
+                    <img :src="imgCatalog" alt="Some img">
+                    <div class="desc">
+                        <h3>{{product.product_name}}</h3>
+                        <p>{{product.price}} $</p>
+                        <button class="buy-btn" @click="addProduct(product)">Купить</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!--modal-start-->
+        <div class="shadow" v-show="isShowFB"></div>
+
+        <div id="modal_auto" class="modal_auto" v-show="isShowFB">
+            <h3>Обратная связь</h3>
+            <button type="button" class="close_modal" @click="isShowFB=!isShowFB">Закрыть</button>
+            <form action="#" id="modal_auto_form">
+                <input type="text" placeholder="Введите ФИО" id="modal_auto_form_name">
+                <input type="tel" placeholder="Введите номер телефона">
+                <input type="email" name="modal_auto_form" placeholder="Введите EMAIL">
+                <textarea name="modal_auto_form" cols="30" rows="10" placeholder="Введите комментарий (не обязательно)"></textarea>
+                <div class="modal_auto_flex">
+                    <button type="reset">Очистить</button>
+                    <button type="submit">Готово</button>
+                </div>
+            </form>
+        </div>
+        <!--modal-end-->
+    </div>
+
+    <script src="js/vue.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
