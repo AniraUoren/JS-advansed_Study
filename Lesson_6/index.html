@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Интернет-магазин</title>
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+
+            <filter-com ref="filter-com" @filterCatalog="filterCatalog"></filter-com>
+            <button class="btn-login" type="button" id="btn-feedback" @click="isShowFB = !isShowFB">Обратиться</button>
+
+            <cart ref="cart"></cart>
+            <!--modal-->
+        </header>
+        <main>
+            <products ref="products"></products>
+        </main>
+
+        <!--modal-start-->
+        <div class="shadow no-display" v-show="isShowFB"></div>
+
+        <div id="modal_auto" class="modal_auto no-display" v-show="isShowFB">
+            <h3>Обратная связь</h3>
+            <button type="button" class="close_modal" @click="isShowFB=!isShowFB">Закрыть</button>
+            <form action="#" id="modal_auto_form">
+                <input type="text" placeholder="Введите ФИО" id="modal_auto_form_name">
+                <input type="tel" placeholder="Введите номер телефона">
+                <input type="email" name="modal_auto_form" placeholder="Введите EMAIL">
+                <textarea name="modal_auto_form" cols="30" rows="10" placeholder="Введите комментарий (не обязательно)"></textarea>
+                <div class="modal_auto_flex">
+                    <button type="reset">Очистить</button>
+                    <button type="submit">Готово</button>
+                </div>
+            </form>
+        </div>
+        <!--modal-end-->
+    </div>
+
+    <script src="js/vue.js"></script>
+    <script src="js/vue_components/cart_comp.js"></script>
+    <script src="js/vue_components/products_comp.js"></script>
+    <script src="js/vue_components/filter_comp.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
