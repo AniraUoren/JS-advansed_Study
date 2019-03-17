@@ -13,7 +13,7 @@ Vue.component("cart", {
             <button class="btn-cart" type="button" id="btn-cart" @click="isShowCart = !isShowCart">Корзина</button>
             <div id="cart" class="cart" v-show="!isShowCart">
                 <p v-if="!cart.length">Корзина пуста</p>
-                <cart-element v-for="element of cart" :element="element" :imgCatalog="imgCatalog" @removeProduct="removeProduct"></cart-element>
+                <cart-element v-for="element of cart" :key="element.id_product" :element="element" :imgCatalog="imgCatalog" @removeProduct="removeProduct" @decreaseProductQuantity="decreaseProductQuantity" @increaseProductQuantity="increaseProductQuantity"></cart-element>
             </div>
         </div>
         `,
@@ -43,7 +43,18 @@ Vue.component("cart", {
                         alert("Error delete");
                     }
                 });
-        }
+        },
+        decreaseProductQuantity(element){
+            if (element.quantity > 1){
+                element.quantity--;
+            }else {
+                this.removeProduct(element);
+            }
+
+        },
+        increaseProductQuantity(element){
+            element.quantity++;
+        },
     },
 });
 
@@ -55,9 +66,9 @@ Vue.component("cart-element", {
                     <h3>{{ element.product_name }}</h3>
                     <p class="cart_element_price">{{ element.price }}</p>
                     <div class="cart_element_quantity-block">
-                        <button class="btn-minus" v-model="element.quantity" @click="+element.quantity--">-</button>
+                        <button class="btn-minus" @click = "$emit('decreaseProductQuantity', element)">-</button>
                         <p class="cart_element_quantity">{{ element.quantity }}</p>
-                        <button class="btn-plus" v-model="element.quantity" @click="element.quantity++">+</button>
+                        <button class="btn-plus" @click = "$emit('increaseProductQuantity', element)">+</button>
                     </div>
                     <button class="del-btn" @click="$emit('removeProduct', element)">X</button>
         </div>

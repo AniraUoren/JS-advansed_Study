@@ -9,21 +9,12 @@ Vue.component('products', {
     },
     template: `
         <div class="products">
-            <div class="product-item" v-for="product of products" :key="product.id_product">
-                    <img :src="imgCatalog" alt="Some img">
-                    <div class="desc">
-                        <h3>{{product.product_name}}</h3>
-                        <p>{{product.price}} $</p>
-                        <button class="buy-btn" @click="$parent.$refs.cart.addProduct(product)">Купить</button>
-                    </div>
-            </div>
+            <product-item v-for="product of filteredProducts" :key="product.id_product" :product="product" :imgCatalog="imgCatalog"></product-item>
         </div>
     `,
     methods:{
         filterCatalog(searchLine){
-            console.log($parent.$refs.products.filterCatalog);
             const regexp = new RegExp(searchLine, "i");
-            console.log(searchLine);
             this.filteredProducts = this.products.filter(el => regexp.test(el.product_name));
         }
     },
@@ -41,6 +32,20 @@ Vue.component('products', {
                     this.products.push(el);
                     this.filteredProducts.push(el);
                 }
-            })
+            });
     }
+});
+
+Vue.component("product-item", {
+   props: ["product", "imgCatalog"],
+   template: `
+    <div class="product-item">
+                <img :src="imgCatalog" alt="Some img">
+                    <div class="desc">
+                        <h3>{{product.product_name}}</h3>
+                        <p>{{product.price}} $</p>
+                        <button class="buy-btn" @click="$parent.$parent.$refs.cart.addProduct(product)">Купить</button>
+                    </div>
+            </div>
+   `
 });
