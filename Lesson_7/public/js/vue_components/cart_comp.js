@@ -47,9 +47,12 @@ Vue.component("cart", {
             }
         },
         removeProduct(product){
-            this.$parent.getJson(`${API}/deleteFromBasket.json`)
+            console.log(product)
+            let find = this.cart.find(el => el.id_product === product.id_product);
+            this.$parent.deleteJson(`/api/cart/${find.id_product}`, product)
                 .then(data =>{
                     if (data.result === 1){
+                        console.log(data.result);
                         this.cart.splice(this.cart.indexOf(product), 1);
                     } else {
                         alert("Error delete");
