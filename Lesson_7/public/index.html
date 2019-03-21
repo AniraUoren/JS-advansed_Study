@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Интернет-магазин</title>
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <error ref="error" :error-show="errorShow"></error>
+            <filter-com ref="filter-com" @filter-catalog="filter-catalog"></filter-com>
+            <feedback ref="feedback"></feedback>
+
+            <cart ref="cart"></cart>
+            <!--modal-->
+        </header>
+        <main>
+            <products ref="products"></products>
+        </main>
+
+        <!--modal-start-->
+        <div class="shadow no-display"></div>
+
+
+        <!--modal-end-->
+    </div>
+
+    <script src="js/vue.js"></script>
+    <script src="js/vue_components/cart_comp.js"></script>
+    <script src="js/vue_components/products_comp.js"></script>
+    <script src="js/vue_components/filter_comp.js"></script>
+    <script src="js/vue_components/feedback_comp.js"></script>
+    <script src="js/vue_components/error_comp.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
