@@ -28,7 +28,6 @@ Vue.component("cart", {
     methods: {
         addProduct(product) {
             let find = this.cart.find(el => el.id_product === product.id_product);
-            console.log(find);
             if(find){
                 this.$parent.putJson(`/api/cart/${find.id_product}`, {quantity: 1})
                     .then(data => {
@@ -47,12 +46,11 @@ Vue.component("cart", {
             }
         },
         removeProduct(product){
-            console.log(product)
+            // console.log(product)
             let find = this.cart.find(el => el.id_product === product.id_product);
             this.$parent.deleteJson(`/api/cart/${find.id_product}`, product)
                 .then(data =>{
                     if (data.result === 1){
-                        console.log(data.result);
                         this.cart.splice(this.cart.indexOf(product), 1);
                     } else {
                         alert("Error delete");
